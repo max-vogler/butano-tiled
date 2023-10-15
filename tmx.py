@@ -7,6 +7,7 @@ from PIL import Image
 import logging
 import os
 import PIL
+import typing
 import xml.etree.ElementTree as ET
 
 def _bg_size(size: int):
@@ -68,7 +69,7 @@ def _tiles_layer_path_to_xpath(layer_path: str) -> str:
     return xpath
 
 class MapObject:
-    def __init__(self, x: int, y: int, id: int, object_class: str):
+    def __init__(self, x: int, y: int, id: int, object_class: str, sprite_id: typing.Union[int, None]):
         """
         :param x: the abscissa of the center of the object
         :param y: the ordinate of the center of the object
@@ -80,6 +81,7 @@ class MapObject:
         self.y = y
         self.id = id
         self.object_class = object_class
+        self.sprite_id = sprite_id
 
 class MapObjects:
     def __init__(self):
@@ -280,7 +282,9 @@ class TMX:
                 item_class = item_node.get("type")
                 item_class = "" if item_class is None else item_class
                 item_x, item_y = _object_position(item_node)
-                objects.add(MapObject(item_x, item_y, item_id, item_class))
+                sprite_id = int(item_node.get("gid")) if item_node.get("gid") else -1
+
+                objects.add(MapObject(item_x, item_y, item_id, item_class, sprite_id))
         return objects
 
     def compose(self, dst_image: PIL.Image.Image, layer_paths: list[str]|str, x: int, y: int):

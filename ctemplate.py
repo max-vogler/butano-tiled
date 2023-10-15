@@ -20,6 +20,7 @@ typedef struct
     int x;
     int y;
     uint16_t id;
+    uint16_t sprite_id;
 } bntmx_map_object;
 
 typedef uint16_t bntmx_map_tile;

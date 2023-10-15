@@ -298,7 +298,7 @@ class TMXConverter:
         objects_spans = multiline_c_array(map(lambda layer: multiline_c_array(map(inline_c_array, layer), indentation, indentation_depth + 1), self._object_spans()), indentation, indentation_depth)
         objects = self._all_objects()
         n_objects = len(objects)
-        object_to_cpp_literal = lambda o: template['map_object_template'].format(x=o.x, y=o.y, id=o.map_id if o.id is None else namespace + str(o.id))
+        object_to_cpp_literal = lambda o: template['map_object_template'].format(x=o.x, y=o.y, id=o.map_id if o.id is None else namespace + str(o.id), sprite_id=o.sprite_id)
         objects_literal = multiline_c_array(list(map(object_to_cpp_literal, objects)), indentation, indentation_depth)
 
         # Get the C or C++ array literal for the given list of tiles, matching lines and columns of the map for readability.
